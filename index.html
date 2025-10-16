@@ -1,59 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Calculator</title>
+    <title>Budget Tracker - Smart Expense Management</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<link rel="stylesheet" href="style.css">
-
 <body>
-    <header>
-        <div class="box">
-            <div>Budget:</div>
-            <div class="input">
-                <input type="text" id="total_amount"  placeholder="Enter Total Amount"><br>
-            </div>
-            <div>
-                <button>Set Budget</button>
-            </div>
-        </div>
-        <div class="box">
-            <div> Expenses: </div>
-            <div class="input">
-                <input type="text" placeholder="Enter Title of product"> <br>
-                <input type="text" placeholder="Enter Cost of product"> <br>
-            </div>
-            <div>
-                <button>Check Amount</button>
-            </div>
-        </div>
-    </header>
-    <div class="middle">
-        <div class="blue-card">
-            <div class="names">
-                <span>Total Budget</span>
-                <span class="total">000</span>
-            </div>
-            <div class="names">
-                <span>Expenses</span>
-                <span>000</span>
-            </div>
-            <div class="names">
-                <span>Balance</span>
-                <span>000</span>
-            </div </div>
-        </div>
-        <div class="last">
-            <div>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>💰 Budget Tracker</h1>
+            <p class="subtitle">Manage your expenses smartly and efficiently</p>
+        </header>
 
+        <!-- Input Cards Section -->
+        <div class="input-section">
+            <!-- Budget Input Card -->
+            <div class="input-card">
+                <h3><span class="icon">💵</span> Set Budget</h3>
+                <div class="input-group">
+                    <input 
+                        type="number" 
+                        id="budgetInput" 
+                        placeholder="Enter your total budget" 
+                        step="0.01"
+                        min="0">
+                </div>
+                <button id="setBudgetBtn" class="btn-primary">
+                    <span class="btn-icon">✓</span> Set Budget
+                </button>
             </div>
-            <div class="expense-list">
-    <div class="heading">Expense List</div>
-</div>
+
+            <!-- Expense Input Card -->
+            <div class="input-card">
+                <h3><span class="icon">🛒</span> Add Expense</h3>
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="expenseTitle" 
+                        placeholder="Expense title (e.g., Groceries)"
+                        maxlength="50">
+                </div>
+                <div class="input-group">
+                    <input 
+                        type="number" 
+                        id="expenseAmount" 
+                        placeholder="Amount" 
+                        step="0.01"
+                        min="0">
+                </div>
+                <button id="addExpenseBtn" class="btn-primary">
+                    <span class="btn-icon">+</span> Add Expense
+                </button>
+            </div>
         </div>
-        <script src="script.js"></script>
+
+        <!-- Statistics Card -->
+        <div class="stats-card">
+            <div class="stats-grid">
+                <div class="stat-item stat-budget">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-label">Total Budget</div>
+                    <div class="stat-value" id="totalBudget">$0.00</div>
+                </div>
+                <div class="stat-item stat-expense">
+                    <div class="stat-icon">💸</div>
+                    <div class="stat-label">Expenses</div>
+                    <div class="stat-value" id="totalExpenses">$0.00</div>
+                </div>
+                <div class="stat-item stat-balance">
+                    <div class="stat-icon">💵</div>
+                    <div class="stat-label">Balance</div>
+                    <div class="stat-value" id="balance">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expense List Section -->
+        <div class="expense-section">
+            <div class="expense-header">
+                <h2>📋 Expense List</h2>
+                <div class="expense-header-right">
+                    <span class="expense-count" id="expenseCount">0 items</span>
+                    <button id="clearAllBtn" class="btn-clear" style="display: none;">
+                        Clear All
+                    </button>
+                </div>
+            </div>
+            <div class="expense-list" id="expenseList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <p>No expenses yet. Add your first expense to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-
 </html>
