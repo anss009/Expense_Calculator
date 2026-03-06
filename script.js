@@ -29,19 +29,19 @@ addExpenseBtn.addEventListener('click', addExpense);
 clearAllBtn.addEventListener('click', clearAllExpenses);
 
 // Enter key support for inputs
-budgetInput.addEventListener('keypress', function(e) {
+budgetInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         setBudget();
     }
 });
 
-expenseAmount.addEventListener('keypress', function(e) {
+expenseAmount.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         addExpense();
     }
 });
 
-expenseTitle.addEventListener('keypress', function(e) {
+expenseTitle.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         expenseAmount.focus();
     }
@@ -54,20 +54,20 @@ expenseTitle.addEventListener('keypress', function(e) {
  */
 function setBudget() {
     const budget = parseFloat(budgetInput.value);
-    
+
     // Validation
     if (isNaN(budget) || budget <= 0) {
         showAlert('Please enter a valid budget amount', 'error');
         budgetInput.focus();
         return;
     }
-    
+
     totalBudget = budget;
     budgetInput.value = '';
-    
+
     updateDisplay();
     showAlert('Budget set successfully!', 'success');
-    
+
     // Add a nice animation to the budget stat
     animateValue(totalBudgetDisplay, 0, budget);
 }
@@ -78,20 +78,20 @@ function setBudget() {
 function addExpense() {
     const title = expenseTitle.value.trim();
     const amount = parseFloat(expenseAmount.value);
-    
+
     // Validation
     if (title === '') {
         showAlert('Please enter an expense title', 'error');
         expenseTitle.focus();
         return;
     }
-    
+
     if (isNaN(amount) || amount <= 0) {
         showAlert('Please enter a valid expense amount', 'error');
         expenseAmount.focus();
         return;
     }
-    
+
     // Create expense object
     const expense = {
         id: Date.now(),
@@ -103,23 +103,23 @@ function addExpense() {
             day: 'numeric'
         })
     };
-    
+
     // Add to expenses array
     expenses.push(expense);
     totalExpenses += amount;
-    
+
     // Update UI
     renderExpenseList();
     updateDisplay();
-    
+
     // Clear inputs
     expenseTitle.value = '';
     expenseAmount.value = '';
     expenseTitle.focus();
-    
+
     // Show success message
     showAlert('Expense added successfully!', 'success');
-    
+
     // Show clear all button if there are expenses
     if (expenses.length > 0) {
         clearAllBtn.style.display = 'block';
@@ -131,20 +131,20 @@ function addExpense() {
  */
 function deleteExpense(id) {
     const index = expenses.findIndex(exp => exp.id === id);
-    
+
     if (index !== -1) {
         // Subtract from total
         totalExpenses -= expenses[index].amount;
-        
+
         // Remove from array
         expenses.splice(index, 1);
-        
+
         // Update UI
         renderExpenseList();
         updateDisplay();
-        
+
         showAlert('Expense deleted successfully!', 'success');
-        
+
         // Hide clear all button if no expenses
         if (expenses.length === 0) {
             clearAllBtn.style.display = 'none';
@@ -157,14 +157,14 @@ function deleteExpense(id) {
  */
 function clearAllExpenses() {
     if (expenses.length === 0) return;
-    
+
     if (confirm('Are you sure you want to delete all expenses?')) {
         expenses = [];
         totalExpenses = 0;
-        
+
         renderExpenseList();
         updateDisplay();
-        
+
         clearAllBtn.style.display = 'none';
         showAlert('All expenses cleared!', 'success');
     }
@@ -175,7 +175,7 @@ function clearAllExpenses() {
  */
 function renderExpenseList() {
     expenseList.innerHTML = '';
-    
+
     if (expenses.length === 0) {
         // Show empty state
         expenseList.innerHTML = `
@@ -187,7 +187,7 @@ function renderExpenseList() {
     } else {
         // Render all expenses (newest first)
         const sortedExpenses = [...expenses].reverse();
-        
+
         sortedExpenses.forEach(expense => {
             const expenseItem = document.createElement('div');
             expenseItem.className = 'expense-item';
@@ -198,10 +198,10 @@ function renderExpenseList() {
                     <div class="expense-amount">$${expense.amount.toFixed(2)}</div>
                 </div>
                 <button class="delete-btn" onclick="deleteExpense(${expense.id})">
-                    🗑️ Delete
+                    Delete
                 </button>
             `;
-            
+
             expenseList.appendChild(expenseItem);
         });
     }
@@ -213,14 +213,14 @@ function renderExpenseList() {
 function updateDisplay() {
     // Update budget display
     totalBudgetDisplay.textContent = `$${totalBudget.toFixed(2)}`;
-    
+
     // Update expenses display
     totalExpensesDisplay.textContent = `$${totalExpenses.toFixed(2)}`;
-    
+
     // Calculate and update balance
     const balance = totalBudget - totalExpenses;
     balanceDisplay.textContent = `$${balance.toFixed(2)}`;
-    
+
     // Change balance color based on value
     const balanceStatItem = balanceDisplay.closest('.stat-item');
     if (balance < 0) {
@@ -230,7 +230,7 @@ function updateDisplay() {
     } else {
         balanceStatItem.style.background = 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
     }
-    
+
     // Update expense count
     expenseCount.textContent = `${expenses.length} item${expenses.length !== 1 ? 's' : ''}`;
 }
@@ -246,12 +246,12 @@ function showAlert(message, type = 'info') {
     if (existingAlert) {
         existingAlert.remove();
     }
-    
+
     // Create alert element
     const alert = document.createElement('div');
     alert.className = `alert alert-${type}`;
     alert.textContent = message;
-    
+
     // Add styles
     alert.style.cssText = `
         position: fixed;
@@ -265,13 +265,13 @@ function showAlert(message, type = 'info') {
         animation: slideInRight 0.3s ease, slideOutRight 0.3s ease 2.7s;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     `;
-    
+
     if (type === 'success') {
         alert.style.background = 'linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)';
     } else if (type === 'error') {
         alert.style.background = 'linear-gradient(135deg, #ff4757 0%, #ff3838 100%)';
     }
-    
+
     // Add animation styles
     const style = document.createElement('style');
     style.textContent = `
@@ -297,10 +297,10 @@ function showAlert(message, type = 'info') {
         }
     `;
     document.head.appendChild(style);
-    
+
     // Add to page
     document.body.appendChild(alert);
-    
+
     // Remove after 3 seconds
     setTimeout(() => {
         alert.remove();
@@ -314,7 +314,7 @@ function animateValue(element, start, end, duration = 600) {
     const range = end - start;
     const increment = range / (duration / 16);
     let current = start;
-    
+
     const timer = setInterval(() => {
         current += increment;
         if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
@@ -371,10 +371,10 @@ function loadFromLocalStorage() {
         totalBudget = parsed.totalBudget || 0;
         totalExpenses = parsed.totalExpenses || 0;
         expenses = parsed.expenses || [];
-        
+
         renderExpenseList();
         updateDisplay();
-        
+
         if (expenses.length > 0) {
             clearAllBtn.style.display = 'block';
         }
@@ -389,14 +389,14 @@ function loadFromLocalStorage() {
 function init() {
     // Uncomment the line below if you want to enable localStorage persistence
     // loadFromLocalStorage();
-    
+
     // Initial display update
     updateDisplay();
-    
+
     // Add focus to budget input on load
     budgetInput.focus();
-    
-    console.log('Budget Tracker initialized successfully! 💰');
+
+    console.log('Budget Tracker initialized successfully!');
 }
 
 // Run initialization when DOM is fully loaded
